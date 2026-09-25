@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { LucideZap } from '@lucide/angular';
 
 @Component({
   selector: 'app-root',
+  imports: [LucideZap],
   templateUrl: './app.html',
-  styleUrl: './app.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {

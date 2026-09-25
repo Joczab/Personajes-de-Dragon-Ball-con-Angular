@@ -1,5 +1,15 @@
-/* Estilos globales de la aplicación */
+@import 'tailwindcss';
+
+/* Colores propios: Tailwind genera clases como bg-ki-500 o text-capsula-700 */
+@theme {
+  --color-ki-50: #fff6ec;
+  --color-ki-100: #ffe9cf;
+  --color-ki-500: #f28c28;
+  --color-ki-600: #d9731a;
+  --color-capsula-700: #1e4e9a;
+  --color-capsula-900: #132f5e;
+}
+
 body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
+  @apply bg-stone-50 text-stone-900 antialiased;
 }
