@@ -1,58 +1,25 @@
 <header class="bg-capsula-900 text-white">
-  <div class="mx-auto flex max-w-6xl items-center gap-3 px-6 py-5">
-    <span class="grid size-11 place-items-center rounded-full bg-ki-500 text-capsula-900">
-      <svg lucideZap class="size-6"></svg>
-    </span>
-    <div>
-      <h1 class="text-2xl font-bold tracking-tight">{{ titulo() }}</h1>
-      <p class="text-sm text-white/70">Mostrando {{ filtrados().length }} de {{ personajes().length }}</p>
-    </div>
-    <span class="ml-auto flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-sm">
-      <svg lucideStar class="size-4 fill-ki-500 text-ki-500"></svg>
-      {{ totalFavoritos() }}
-    </span>
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-6 py-5">
+    <a routerLink="/" class="flex items-center gap-3">
+      <span class="grid size-11 place-items-center rounded-full bg-ki-500 text-capsula-900">
+        <svg lucideZap class="size-6"></svg>
+      </span>
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight">{{ titulo() }}</h1>
+        <p class="text-sm text-white/70">Personajes de Dragon Ball</p>
+      </div>
+    </a>
+
+    <nav class="ml-auto flex items-center gap-1 text-sm">
+      <a routerLink="/personajes" routerLinkActive="bg-white/15" class="rounded-md px-3 py-1.5 hover:bg-white/10">Personajes</a>
+      <span class="ml-2 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1">
+        <svg lucideStar class="size-4 fill-ki-500 text-ki-500"></svg>
+        {{ favs.total() }}
+      </span>
+    </nav>
   </div>
 </header>
 
 <main class="mx-auto max-w-6xl px-6 py-8">
-  <div class="mb-6 flex flex-wrap gap-3">
-    <label class="relative min-w-60 flex-1">
-      <svg lucideSearch class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-stone-400"></svg>
-      <input
-        type="search"
-        placeholder="Buscar por nombre…"
-        [value]="texto()"
-        (input)="alEscribir($event)"
-        class="w-full rounded-lg border border-stone-300 bg-white py-2 pr-3 pl-9 outline-none focus:border-ki-500 focus:ring-2 focus:ring-ki-500/30"
-      />
-    </label>
-    <select
-      [value]="raza()"
-      (change)="alCambiarRaza($event)"
-      class="rounded-lg border border-stone-300 bg-white px-3 py-2 outline-none focus:border-ki-500 focus:ring-2 focus:ring-ki-500/30"
-    >
-      <option value="todas">Todas las razas</option>
-      @for (r of razas; track r) {
-        <option [value]="r">{{ r }}</option>
-      }
-    </select>
-  </div>
-
-  <!--
-    Layout masonry (estilo Pinterest) con columnas de CSS: columns-2 / sm:columns-3 / lg:columns-4.
-    El navegador reparte las tarjetas en columnas y cada una empieza justo donde termina la de arriba.
-    Ojo: el orden va de arriba hacia abajo en cada columna, no de izquierda a derecha.
-    Cada tarjeta lleva break-inside-avoid (en su host) para no partirse entre dos columnas.
-  -->
-  <section class="columns-2 gap-4 sm:columns-3 lg:columns-4">
-    @for (p of filtrados(); track p.id) {
-      <app-personaje-card
-        [personaje]="p"
-        [esFavorito]="esFavorito(p.id)"
-        (favoritoCambiado)="alternarFavorito($event)"
-      />
-    } @empty {
-      <p class="col-span-full text-stone-500">Nadie se llama "{{ texto() }}" en este universo.</p>
-    }
-  </section>
+  <router-outlet />
 </main>

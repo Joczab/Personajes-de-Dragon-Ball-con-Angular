@@ -1,0 +1,26 @@
+import { ChangeDetectionStrategy, Component, inject, input, numberAttribute } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { LucideArrowLeft, LucideGlobe, LucideStar, LucideZap } from '@lucide/angular';
+import { switchMap } from 'rxjs';
+import { PersonajesService } from '../../personajes/personajes.service';
+import { FavoritosService } from '../../personajes/favoritos.service';
+
+@Component({
+  selector: 'app-detalle',
+  imports: [RouterLink, LucideArrowLeft, LucideGlobe, LucideStar, LucideZap],
+  templateUrl: './detalle.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class Detalle {
+  private readonly servicio = inject(PersonajesService);
+  protected readonly favs = inject(FavoritosService);
+
+  // Llega desde la URL /personajes/:id gracias a withComponentInputBinding()
+  readonly id = input.required({ transform: numberAttribute });
+
+  // Cada vez que cambia el id, cancelamos la petición anterior y pedimos la nueva
+  protected readonly personaje = toSignal(
+    toObservable(this.id).pipe(switchMap((id) => this.servicio.obtener(id))),
+  );
+}

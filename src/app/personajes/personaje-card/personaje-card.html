@@ -28,7 +28,9 @@
   </div>
 
   <div class="flex flex-1 flex-col gap-2 p-4">
-    <h3 class="text-lg font-semibold leading-tight">{{ p.name }}</h3>
+    <h3 class="text-lg font-semibold leading-tight">
+      <a [routerLink]="['/personajes', p.id]" class="hover:text-capsula-700 hover:underline">{{ p.name }}</a>
+    </h3>
 
     <div class="flex flex-wrap gap-1.5 text-xs">
       <span class="rounded-full bg-capsula-700 px-2 py-0.5 font-medium text-white">{{ p.race }}</span>

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LucideImageOff, LucideStar, LucideZap } from '@lucide/angular';
 import { Personaje } from '../personaje';
 
@@ -8,7 +9,7 @@ import { Personaje } from '../personaje';
   // break-inside-avoid: la tarjeta no se parte entre dos columnas del masonry.
   // mb-4: separación vertical, porque en columns el gap solo separa columnas.
   host: { class: 'mb-4 block break-inside-avoid' },
-  imports: [LucideZap, LucideImageOff, LucideStar],
+  imports: [RouterLink, LucideZap, LucideImageOff, LucideStar],
   templateUrl: './personaje-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
