@@ -1,59 +1,100 @@
-# DirectorioPersonajes
+# Directorio de Personajes — Angular 21
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.24.
+Proyecto guía del módulo **Programación del lado del cliente** (URBE 2026).
+Consume la API pública de [Dragon Ball](https://dragonball-api.com).
+Estilos con [TailwindCSS 4](https://tailwindcss.com) e íconos con [Lucide](https://lucide.dev).
 
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Cómo arrancar
 
 ```bash
-ng generate component component-name
+npm install
+npm start          # http://localhost:4200
+npm test           # pruebas con Vitest
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Requisitos: Node 20.19+ / 22.12+ / 24, y Angular CLI 21 (`npm i -g @angular/cli@21`).
+
+## Paquetes que agregamos
+
+| Paquete                | Dónde            | Por qué                                                  |
+|------------------------|------------------|----------------------------------------------------------|
+| `tailwindcss`          | devDependencies  | Genera el CSS en tiempo de compilación                   |
+| `@tailwindcss/postcss` | devDependencies  | Conecta Tailwind con el build de Angular (PostCSS)       |
+| `postcss`              | devDependencies  | El procesador de CSS que usa el plugin                   |
+| `@lucide/angular`      | dependencies     | Los íconos viajan dentro de la app que ve el usuario     |
 
 ```bash
-ng generate --help
+npm install -D tailwindcss @tailwindcss/postcss postcss
+npm install @lucide/angular
 ```
 
-## Building
+Además: `.postcssrc.json` con el plugin y `@import 'tailwindcss';` en `src/styles.css`.
+Atajo equivalente: `ng add tailwindcss`.
 
-To build the project run:
+## Avance por pasos
+
+Cada paso es un tag de git:
 
 ```bash
-ng build
+git checkout paso-04      # ver ese momento
+git checkout main         # volver al final
+git diff paso-03 paso-04  # ver solo lo que cambió
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Sábado 1 — Fundamentos
 
-## Running unit tests
+| Tag       | Qué se hace                                   | Conceptos                                   |
+|-----------|-----------------------------------------------|---------------------------------------------|
+| `paso-00` | `ng new directorio-personajes`                | CLI, estructura del proyecto                |
+| `paso-01` | Limpiar la plantilla                          | Componente raíz, interpolación              |
+| `paso-02` | Instalar Tailwind y Lucide                    | npm, `package.json`, dependencias           |
+| `paso-03` | Modelo `Personaje`, datos de ejemplo, listado | Interfaces TS, `signal()`, `@for`           |
+| `paso-04` | Componente `PersonajeCard` (imágenes de altura pareja) | `input.required()`, `@switch`, `@let`, CSS Grid |
+| `paso-05` | Buscador y filtro por raza                    | `computed()`, eventos, `@empty`             |
+| `paso-06` | Favoritos que persisten                       | `output()`, `update()`, `effect()`          |
+| `paso-07` | Layout masonry (estilo Pinterest)             | `columns-*`, `break-inside-avoid`, `host`   |
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Tag `fin-sabado-1` = `paso-07`. Compara `git diff paso-06 paso-07`: grilla pareja contra masonry.
 
-```bash
-ng test
+### Sábado 2 — Aplicación real
+
+| Tag       | Qué se hace                                        | Conceptos                                              |
+|-----------|----------------------------------------------------|--------------------------------------------------------|
+| `paso-08` | Servicio que consume la API                        | `@Injectable`, `inject()`, `HttpClient`, `toSignal()`  |
+| `paso-09` | Rutas: listado, detalle con transformaciones, 404  | `loadComponent`, `withComponentInputBinding`           |
+| `paso-10` | Búsqueda y paginación contra el servidor           | `toObservable`, `debounceTime`, `switchMap`            |
+| `paso-11` | Página de favoritos y formulario de sugerencias    | `forkJoin`, estado compartido, Reactive Forms          |
+| `paso-12` | Pruebas unitarias                                  | Vitest, `HttpTestingController`                        |
+
+Tag `fin-sabado-2` = `paso-12`.
+
+## Sobre la API
+
+- Listado paginado: `GET /api/characters?page=1&limit=12` → `{ items, meta, links }`.
+- Con filtros (`?name=goku`, `?race=Saiyan`) responde un **arreglo simple, sin paginación**. El servicio normaliza las dos formas.
+- Detalle: `GET /api/characters/1` → incluye `originPlanet` y `transformations`.
+
+## Historia
+
+La carpeta [`historia/`](historia) tiene el mismo ejemplo escrito como se hacía antes:
+
+- `1-angularjs/index.html` — AngularJS 1.8 (ábrelo directo en el navegador).
+- `2-ngmodules/` — Angular con `NgModule`, `@Input`, `*ngFor`, `constructor(private ...)`.
+
+## Estructura final
+
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+src/
+├── styles.css                      ← @import 'tailwindcss' + colores propios (@theme)
+└── app/
+    ├── app.ts / app.html           ← shell: barra y <router-outlet>
+    ├── app.config.ts               ← providers globales (router, http)
+    ├── app.routes.ts               ← rutas con carga diferida
+    ├── personajes/
+    │   ├── personaje.ts            ← tipos
+    │   ├── personajes.service.ts   ← acceso a la API
+    │   ├── favoritos.service.ts    ← estado compartido con signals
+    │   └── personaje-card/         ← componente de presentación
+    └── paginas/
+        ├── lista/  detalle/  favoritos/  sugerir/  no-encontrada/
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
