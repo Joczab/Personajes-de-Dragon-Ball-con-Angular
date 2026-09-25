@@ -1,0 +1,45 @@
+@let p = personaje();
+
+<!--
+  h-full + flex-col: todas las tarjetas de una fila miden lo mismo (la grilla las estira)
+  y el botón queda pegado abajo gracias a mt-auto.
+-->
+<article class="flex h-full flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+  <!--
+    Caja de la imagen con ALTURA FIJA (h-64 = 16rem = 256px).
+    Las fotos de la API tienen tamaños distintos (Bulma es más alta que Piccolo).
+    Si dejamos que cada imagen decida su altura, las tarjetas quedan disparejas.
+    - flex + items-center + justify-center: centra la imagen dentro de la caja.
+    - max-h-full / max-w-full: la imagen nunca se sale de la caja.
+    - object-contain: se ve completa, sin recortes ni deformación.
+  -->
+  <div class="flex h-64 items-center justify-center bg-linear-to-b from-ki-100 to-ki-50 p-4">
+    @if (imagenFallo()) {
+      <!-- Si la imagen no carga, (error) cambia el signal y mostramos un ícono -->
+      <svg lucideImageOff class="size-12 text-stone-400"></svg>
+    } @else {
+      <img [src]="p.image" [alt]="p.name" loading="lazy" (error)="imagenFallo.set(true)" class="max-h-full max-w-full object-contain" />
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col gap-2 p-4">
+    <h3 class="text-lg font-semibold leading-tight">{{ p.name }}</h3>
+
+    <div class="flex flex-wrap gap-1.5 text-xs">
+      <span class="rounded-full bg-capsula-700 px-2 py-0.5 font-medium text-white">{{ p.race }}</span>
+      <span class="rounded-full bg-stone-100 px-2 py-0.5 text-stone-700">
+        @switch (p.gender) {
+          @case ('Male') { Masculino }
+          @case ('Female') { Femenino }
+          @default { Desconocido }
+        }
+      </span>
+    </div>
+
+    <p class="flex items-center gap-1 text-sm text-stone-600">
+      <svg lucideZap class="size-4 text-ki-600"></svg>
+      Ki: <span class="font-medium text-stone-900">{{ p.ki }}</span>
+    </p>
+    <p class="text-xs text-stone-500">{{ p.affiliation }}</p>
+  </div>
+</article>
