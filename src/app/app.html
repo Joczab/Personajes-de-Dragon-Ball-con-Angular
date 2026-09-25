@@ -39,11 +39,12 @@
   </div>
 
   <!--
-    Grilla clásica (CSS Grid): columnas del mismo ancho y filas alineadas.
-    grid-cols-2 en móvil, sm:grid-cols-3 en tablet, lg:grid-cols-4 en escritorio.
-    Las variantes sm: y lg: son "mobile first": se aplican desde ese ancho hacia arriba.
+    Layout masonry (estilo Pinterest) con columnas de CSS: columns-2 / sm:columns-3 / lg:columns-4.
+    El navegador reparte las tarjetas en columnas y cada una empieza justo donde termina la de arriba.
+    Ojo: el orden va de arriba hacia abajo en cada columna, no de izquierda a derecha.
+    Cada tarjeta lleva break-inside-avoid (en su host) para no partirse entre dos columnas.
   -->
-  <section class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+  <section class="columns-2 gap-4 sm:columns-3 lg:columns-4">
     @for (p of filtrados(); track p.id) {
       <app-personaje-card
         [personaje]="p"

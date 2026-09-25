@@ -4,6 +4,10 @@ import { Personaje } from '../personaje';
 
 @Component({
   selector: 'app-personaje-card',
+  // Clases en el elemento <app-personaje-card> mismo (el "host").
+  // break-inside-avoid: la tarjeta no se parte entre dos columnas del masonry.
+  // mb-4: separación vertical, porque en columns el gap solo separa columnas.
+  host: { class: 'mb-4 block break-inside-avoid' },
   imports: [LucideZap, LucideImageOff, LucideStar],
   templateUrl: './personaje-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
