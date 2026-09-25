@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 import { LucideSearch, LucideStar, LucideZap } from '@lucide/angular';
-import { PERSONAJES_MOCK } from './personajes/personajes.mock';
+import { PersonajesService } from './personajes/personajes.service';
 import { PersonajeCard } from './personajes/personaje-card/personaje-card';
 
 @Component({
@@ -11,7 +13,12 @@ import { PersonajeCard } from './personajes/personaje-card/personaje-card';
 })
 export class App {
   protected readonly titulo = signal('Directorio de Personajes');
-  protected readonly personajes = signal(PERSONAJES_MOCK);
+  private readonly servicio = inject(PersonajesService);
+
+  // Observable -> signal. initialValue evita undefined mientras llega la respuesta.
+  protected readonly personajes = toSignal(this.servicio.listar().pipe(map((r) => r.items)), {
+    initialValue: [],
+  });
   protected readonly razas = ['Saiyan', 'Human', 'Namekian', 'Frieza Race', 'Android'];
 
   // Estado de la UI

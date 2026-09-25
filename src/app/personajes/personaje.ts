@@ -13,3 +13,36 @@ export interface Personaje {
   image: string;
   description?: string;
 }
+
+export interface Planeta {
+  id: number;
+  name: string;
+  isDestroyed: boolean;
+  description: string;
+  image: string;
+}
+
+export interface Transformacion {
+  id: number;
+  name: string;
+  image: string;
+  ki: string;
+}
+
+// El detalle (/characters/:id) trae además el planeta y las transformaciones
+export interface PersonajeDetalle extends Personaje {
+  originPlanet?: Planeta;
+  transformations?: Transformacion[];
+}
+
+// Respuesta paginada de la API
+export interface Pagina<T> {
+  items: T[];
+  meta: {
+    totalItems: number;
+    itemCount: number;
+    itemsPerPage: number;
+    totalPages: number;
+    currentPage: number;
+  };
+}
