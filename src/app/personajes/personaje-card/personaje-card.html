@@ -4,7 +4,13 @@
   h-full + flex-col: todas las tarjetas de una fila miden lo mismo (la grilla las estira)
   y el botón queda pegado abajo gracias a mt-auto.
 -->
-<article class="flex h-full flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+<article
+  class="flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition"
+  [class.border-stone-200]="!esFavorito()"
+  [class.border-ki-500]="esFavorito()"
+  [class.ring-2]="esFavorito()"
+  [class.ring-ki-500]="esFavorito()"
+>
   <!--
     Caja de la imagen con ALTURA FIJA (h-64 = 16rem = 256px).
     Las fotos de la API tienen tamaños distintos (Bulma es más alta que Piccolo).
@@ -41,5 +47,16 @@
       Ki: <span class="font-medium text-stone-900">{{ p.ki }}</span>
     </p>
     <p class="text-xs text-stone-500">{{ p.affiliation }}</p>
+
+    <button
+      type="button"
+      (click)="marcar()"
+      [attr.aria-pressed]="esFavorito()"
+      class="mt-auto flex items-center justify-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium transition"
+      [class]="esFavorito() ? 'border-ki-500 bg-ki-500 text-white' : 'border-stone-300 text-stone-700 hover:bg-stone-50'"
+    >
+      <svg lucideStar class="size-4" [class.fill-current]="esFavorito()"></svg>
+      {{ esFavorito() ? 'Favorito' : 'Marcar favorito' }}
+    </button>
   </div>
 </article>

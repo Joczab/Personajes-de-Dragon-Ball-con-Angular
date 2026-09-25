@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { LucideSearch, LucideZap } from '@lucide/angular';
+import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
+import { LucideSearch, LucideStar, LucideZap } from '@lucide/angular';
 import { PERSONAJES_MOCK } from './personajes/personajes.mock';
 import { PersonajeCard } from './personajes/personaje-card/personaje-card';
 
 @Component({
   selector: 'app-root',
-  imports: [LucideZap, LucideSearch, PersonajeCard],
+  imports: [LucideZap, LucideSearch, LucideStar, PersonajeCard],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -27,11 +27,39 @@ export class App {
     );
   });
 
+  // Favoritos: guardamos solo los ids
+  protected readonly favoritos = signal<number[]>(leerFavoritos());
+  protected readonly totalFavoritos = computed(() => this.favoritos().length);
+
+  constructor() {
+    // effect: efecto secundario cada vez que cambian los favoritos
+    effect(() => {
+      localStorage.setItem('favoritos', JSON.stringify(this.favoritos()));
+    });
+  }
+
+  protected esFavorito(id: number) {
+    return this.favoritos().includes(id);
+  }
+
+  protected alternarFavorito(id: number) {
+    // Nunca mutamos: creamos un arreglo nuevo con update()
+    this.favoritos.update((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
+  }
+
   protected alEscribir(evento: Event) {
     this.texto.set((evento.target as HTMLInputElement).value);
   }
 
   protected alCambiarRaza(evento: Event) {
     this.raza.set((evento.target as HTMLSelectElement).value);
+  }
+}
+
+function leerFavoritos(): number[] {
+  try {
+    return JSON.parse(localStorage.getItem('favoritos') ?? '[]');
+  } catch {
+    return [];
   }
 }
