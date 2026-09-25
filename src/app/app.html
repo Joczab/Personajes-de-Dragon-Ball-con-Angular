@@ -12,10 +12,11 @@
 
     <nav class="ml-auto flex items-center gap-1 text-sm">
       <a routerLink="/personajes" routerLinkActive="bg-white/15" class="rounded-md px-3 py-1.5 hover:bg-white/10">Personajes</a>
-      <span class="ml-2 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1">
+      <a routerLink="/favoritos" routerLinkActive="bg-white/15" class="flex items-center gap-1.5 rounded-md px-3 py-1.5 hover:bg-white/10">
         <svg lucideStar class="size-4 fill-ki-500 text-ki-500"></svg>
-        {{ favs.total() }}
-      </span>
+        Favoritos ({{ favs.total() }})
+      </a>
+      <a routerLink="/sugerir" routerLinkActive="bg-white/15" class="rounded-md px-3 py-1.5 hover:bg-white/10">Sugerir</a>
     </nav>
   </div>
 </header>

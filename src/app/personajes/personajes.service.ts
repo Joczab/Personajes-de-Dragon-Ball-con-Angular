@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of, throwError } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, throwError } from 'rxjs';
 import { Pagina, Personaje, PersonajeDetalle } from './personaje';
 
 export interface Filtro {
@@ -39,6 +39,11 @@ export class PersonajesService {
         err.status === 404 ? of(unaSolaPagina([])) : throwError(() => err),
       ),
     );
+  }
+
+  // Varios personajes a la vez: una petición por id, en paralelo
+  varios(ids: number[]): Observable<Personaje[]> {
+    return ids.length ? forkJoin(ids.map((id) => this.obtener(id))) : of([]);
   }
 
   obtener(id: number): Observable<PersonajeDetalle> {
