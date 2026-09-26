@@ -1,0 +1,27 @@
+<article class="flex h-full flex-col overflow-hidden rounded-xl border border-stone-200 bg-white p-2 shadow-sm">
+  <div>
+    @if (imageLoaded()) {
+    <img [src]="personaje().image" [alt]="personaje().name" class="size-12 rounded-full bg-ki-100 object-contain">
+    } @else {
+      <svg lucideImageOff class="size-12 text-stone-400"></svg>
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col gap-2 p-4">
+    <h3 class="text-lg font-semibold">{{ personaje().name }}</h3>
+
+    <div>
+      <span class="rounded-full bg-capsula-700 px-2 py-0.5 font-medium text-white">
+        {{ personaje().race}}
+      </span>
+      <span  class="rounded-full bg-capsula-100 px-2 py-0.5 text-stone-700">
+        @switch (personaje().gender) {
+          @case ('Male') { Masculino}
+          @case ('Female') { Femenino }
+          @default { Desconocido}
+        }
+      </span>
+    </div>
+
+  </div>
+</article>
