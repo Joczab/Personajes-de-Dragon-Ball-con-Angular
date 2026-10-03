@@ -1,0 +1,27 @@
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { LucideSearch } from '@lucide/angular';
+
+// Componente de presentación: el buscador y el select de raza.
+// No sabe de la API ni de la paginación: recibe valores y avisa cambios.
+@Component({
+  selector: 'app-filtros-personajes',
+  imports: [LucideSearch],
+  templateUrl: './filtros-personajes.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FiltrosPersonajes {
+  readonly texto = input('');
+  readonly raza = input('todas');
+  readonly razas = input.required<string[]>();
+
+  readonly textoCambio = output<string>();
+  readonly razaCambio = output<string>();
+
+  protected alEscribir(evento: Event) {
+    this.textoCambio.emit((evento.target as HTMLInputElement).value);
+  }
+
+  protected alElegirRaza(evento: Event) {
+    this.razaCambio.emit((evento.target as HTMLSelectElement).value);
+  }
+}

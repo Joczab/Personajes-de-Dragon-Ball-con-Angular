@@ -3,12 +3,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LucideCircleCheck } from '@lucide/angular';
 
 @Component({
-  selector: 'app-sugerir',
+  selector: 'app-sugerir-personaje',
   imports: [ReactiveFormsModule, LucideCircleCheck],
-  templateUrl: './sugerir.html',
+  templateUrl: './sugerir-personaje.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Sugerir {
+export class SugerirPersonaje {
   private readonly fb = inject(FormBuilder).nonNullable;
 
   protected readonly enviado = signal<string | null>(null);

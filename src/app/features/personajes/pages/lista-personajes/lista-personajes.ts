@@ -1,22 +1,25 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { LucideChevronLeft, LucideChevronRight, LucideSearch } from '@lucide/angular';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { PersonajeCard } from '../../personajes/personaje-card/personaje-card';
-import { PersonajesService } from '../../personajes/personajes.service';
-import { FavoritosService } from '../../personajes/favoritos.service';
+import { FavoritosService } from '@core/services/favoritos.service';
+import { Paginador } from '@shared/ui/paginador/paginador';
+import { FiltrosPersonajes } from '../../components/filtros-personajes/filtros-personajes';
+import { PersonajeCard } from '../../components/personaje-card/personaje-card';
+import { RAZAS } from '../../models/personaje.model';
+import { PersonajesService } from '../../services/personajes.service';
 
+// Página (componente contenedor): tiene el estado, habla con los servicios
+// y le pasa datos a los componentes de presentación.
 @Component({
-  selector: 'app-lista',
-  imports: [PersonajeCard, LucideSearch, LucideChevronLeft, LucideChevronRight],
-  templateUrl: './lista.html',
+  selector: 'app-lista-personajes',
+  imports: [FiltrosPersonajes, PersonajeCard, Paginador],
+  templateUrl: './lista-personajes.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Lista {
+export class ListaPersonajes {
   private readonly servicio = inject(PersonajesService);
   protected readonly favs = inject(FavoritosService);
-
-  protected readonly razas = ['Saiyan', 'Human', 'Namekian', 'Frieza Race', 'Android', 'Majin', 'God', 'Angel'];
+  protected readonly razas = RAZAS;
 
   // Estado de la UI (signals)
   protected readonly texto = signal('');
@@ -44,17 +47,13 @@ export class Lista {
   protected readonly total = computed(() => this.respuesta()?.meta.totalItems ?? 0);
   protected readonly totalPaginas = computed(() => this.respuesta()?.meta.totalPages ?? 0);
 
-  protected alEscribir(evento: Event) {
-    this.texto.set((evento.target as HTMLInputElement).value);
+  protected alCambiarTexto(texto: string) {
+    this.texto.set(texto);
     this.pagina.set(1); // al cambiar el filtro volvemos a la primera página
   }
 
-  protected alCambiarRaza(evento: Event) {
-    this.raza.set((evento.target as HTMLSelectElement).value);
+  protected alCambiarRaza(raza: string) {
+    this.raza.set(raza);
     this.pagina.set(1);
-  }
-
-  protected irA(delta: number) {
-    this.pagina.update((p) => p + delta);
   }
 }

@@ -65,8 +65,9 @@ Tag `fin-sabado-1` = `paso-07`. Compara `git diff paso-06 paso-07`: grilla parej
 | `paso-10` | Búsqueda y paginación contra el servidor           | `toObservable`, `debounceTime`, `switchMap`            |
 | `paso-11` | Página de favoritos y formulario de sugerencias    | `forkJoin`, estado compartido, Reactive Forms          |
 | `paso-12` | Pruebas unitarias                                  | Vitest, `HttpTestingController`                        |
+| `paso-13` | Arquitectura por features                          | `core/` `shared/` `features/`, `loadChildren`, contenedor y presentación, alias `@core` |
 
-Tag `fin-sabado-2` = `paso-12`.
+Tag `fin-sabado-2` = `paso-12` (estructura simple). `paso-13` reorganiza el mismo código; compara con `git diff -M --stat paso-12 paso-13`.
 
 ## Sobre la API
 
@@ -81,20 +82,52 @@ La carpeta [`historia/`](historia) tiene el mismo ejemplo escrito como se hacía
 - `1-angularjs/index.html` — AngularJS 1.8 (ábrelo directo en el navegador).
 - `2-ngmodules/` — Angular con `NgModule`, `@Input`, `*ngFor`, `constructor(private ...)`.
 
-## Estructura final
+## Estructura final (paso-13)
+
+Organizada **por funcionalidad** (feature), y dentro de cada una **por responsabilidad**.
 
 ```
-src/
-├── styles.css                      ← @import 'tailwindcss' + colores propios (@theme)
-└── app/
-    ├── app.ts / app.html           ← shell: barra y <router-outlet>
-    ├── app.config.ts               ← providers globales (router, http)
-    ├── app.routes.ts               ← rutas con carga diferida
+src/app/
+├── app.ts · app.html            ← shell: <app-header> + <router-outlet>
+├── app.config.ts                ← providers globales (router, http)
+├── app.routes.ts                ← una entrada por feature con loadChildren
+│
+├── core/                        ← una sola vez en toda la app
+│   ├── config/api.ts            ← URL base de la API
+│   ├── layout/header/           ← barra de navegación
+│   ├── layout/no-encontrada/    ← página 404
+│   └── services/favoritos.service.ts   ← estado global (signals + localStorage)
+│
+├── shared/                      ← reutilizable y sin lógica de negocio
+│   ├── models/pagina.model.ts   ← Pagina<T> genérica
+│   └── ui/paginador/            ← componente de presentación
+│
+└── features/
     ├── personajes/
-    │   ├── personaje.ts            ← tipos
-    │   ├── personajes.service.ts   ← acceso a la API
-    │   ├── favoritos.service.ts    ← estado compartido con signals
-    │   └── personaje-card/         ← componente de presentación
-    └── paginas/
-        ├── lista/  detalle/  favoritos/  sugerir/  no-encontrada/
+    │   ├── models/              ← interfaces y constantes del dominio
+    │   ├── services/            ← acceso a la API (+ pruebas)
+    │   ├── components/          ← presentación: personaje-card, filtros-personajes
+    │   ├── pages/               ← contenedores: lista-personajes, detalle-personaje
+    │   └── personajes.routes.ts
+    ├── favoritos/
+    │   ├── pages/mis-favoritos/
+    │   └── favoritos.routes.ts
+    └── sugerencias/
+        ├── pages/sugerir-personaje/
+        └── sugerencias.routes.ts
 ```
+
+### Reglas
+
+| Carpeta | Qué va | Puede importar de |
+|---|---|---|
+| `core/` | Lo que existe una sola vez: layout, configuración, estado global | `shared/` |
+| `shared/` | Componentes, modelos y utilidades sin lógica de negocio | nada de la app |
+| `features/x/pages/` | Componentes **contenedores**: tienen estado, inyectan servicios, se cargan por ruta | `core/`, `shared/`, su feature y `components/` o `services/` de otra feature |
+| `features/x/components/` | Componentes **de presentación**: solo `input()` y `output()`, sin servicios | `shared/`, `models/` de su feature |
+| `features/x/services/` | Acceso a datos (HTTP) | `core/`, `shared/`, `models/` |
+| `features/x/models/` | Interfaces, tipos y constantes | `shared/models/` |
+
+- Una página nunca importa otra página: a las páginas solo las carga el router.
+- Dentro de una feature se usan imports relativos (`../../services/...`); entre capas, los alias de `tsconfig.json`: `@core/*`, `@shared/*`, `@features/*`.
+- Cada feature trae su archivo `*.routes.ts`; `app.routes.ts` solo las monta con `loadChildren`.

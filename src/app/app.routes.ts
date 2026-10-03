@@ -1,29 +1,23 @@
 import { Routes } from '@angular/router';
 
+// Rutas de primer nivel: cada feature trae sus propias rutas y se carga diferida.
 export const routes: Routes = [
   { path: '', redirectTo: 'personajes', pathMatch: 'full' },
   {
     path: 'personajes',
-    title: 'Personajes',
-    loadComponent: () => import('./paginas/lista/lista').then((m) => m.Lista),
-  },
-  {
-    path: 'personajes/:id',
-    title: 'Detalle',
-    loadComponent: () => import('./paginas/detalle/detalle').then((m) => m.Detalle),
+    loadChildren: () => import('./features/personajes/personajes.routes').then((m) => m.PERSONAJES_ROUTES),
   },
   {
     path: 'favoritos',
-    title: 'Favoritos',
-    loadComponent: () => import('./paginas/favoritos/favoritos').then((m) => m.Favoritos),
+    loadChildren: () => import('./features/favoritos/favoritos.routes').then((m) => m.FAVORITOS_ROUTES),
   },
   {
     path: 'sugerir',
-    title: 'Sugerir personaje',
-    loadComponent: () => import('./paginas/sugerir/sugerir').then((m) => m.Sugerir),
+    loadChildren: () => import('./features/sugerencias/sugerencias.routes').then((m) => m.SUGERENCIAS_ROUTES),
   },
   {
     path: '**',
-    loadComponent: () => import('./paginas/no-encontrada/no-encontrada').then((m) => m.NoEncontrada),
+    title: 'No encontrada',
+    loadComponent: () => import('./core/layout/no-encontrada/no-encontrada').then((m) => m.NoEncontrada),
   },
 ];

@@ -1,23 +1,16 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, forkJoin, map, of, throwError } from 'rxjs';
-import { Pagina, Personaje, PersonajeDetalle } from './personaje';
+import { API_URL } from '@core/config/api';
+import { Pagina, unaSolaPagina } from '@shared/models/pagina.model';
+import { Filtro, Personaje, PersonajeDetalle } from '../models/personaje.model';
 
-export interface Filtro {
-  pagina: number;
-  nombre: string;
-  raza: string;
-}
-
+// Acceso a datos: el único lugar de la app que sabe cómo se le habla a /characters.
 @Injectable({ providedIn: 'root' })
 export class PersonajesService {
   private readonly http = inject(HttpClient);
-  private readonly api = 'https://dragonball-api.com/api/characters';
+  private readonly url = `${API_URL}/characters`;
   private readonly porPagina = 12;
-
-  listar(): Observable<Pagina<Personaje>> {
-    return this.http.get<Pagina<Personaje>>(this.api, { params: { limit: this.porPagina } });
-  }
 
   // Sin filtros la API pagina (?page=2&limit=12).
   // Con filtros (?name=goku o ?race=Saiyan) devuelve un arreglo simple, sin paginación.
@@ -32,11 +25,11 @@ export class PersonajesService {
       params = params.set('page', filtro.pagina).set('limit', this.porPagina);
     }
 
-    return this.http.get<Pagina<Personaje> | Personaje[]>(this.api, { params }).pipe(
+    return this.http.get<Pagina<Personaje> | Personaje[]>(this.url, { params }).pipe(
       map((r) => (Array.isArray(r) ? unaSolaPagina(r) : r)),
       // Si la API responde 404 lo tratamos como "sin resultados"
       catchError((err: HttpErrorResponse) =>
-        err.status === 404 ? of(unaSolaPagina([])) : throwError(() => err),
+        err.status === 404 ? of(unaSolaPagina<Personaje>([])) : throwError(() => err),
       ),
     );
   }
@@ -47,19 +40,6 @@ export class PersonajesService {
   }
 
   obtener(id: number): Observable<PersonajeDetalle> {
-    return this.http.get<PersonajeDetalle>(`${this.api}/${id}`);
+    return this.http.get<PersonajeDetalle>(`${this.url}/${id}`);
   }
-}
-
-function unaSolaPagina(items: Personaje[]): Pagina<Personaje> {
-  return {
-    items,
-    meta: {
-      totalItems: items.length,
-      itemCount: items.length,
-      itemsPerPage: items.length,
-      totalPages: items.length ? 1 : 0,
-      currentPage: 1,
-    },
-  };
 }

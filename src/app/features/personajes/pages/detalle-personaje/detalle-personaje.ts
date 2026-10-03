@@ -3,16 +3,16 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { LucideArrowLeft, LucideGlobe, LucideStar, LucideZap } from '@lucide/angular';
 import { switchMap } from 'rxjs';
-import { PersonajesService } from '../../personajes/personajes.service';
-import { FavoritosService } from '../../personajes/favoritos.service';
+import { FavoritosService } from '@core/services/favoritos.service';
+import { PersonajesService } from '../../services/personajes.service';
 
 @Component({
-  selector: 'app-detalle',
+  selector: 'app-detalle-personaje',
   imports: [RouterLink, LucideArrowLeft, LucideGlobe, LucideStar, LucideZap],
-  templateUrl: './detalle.html',
+  templateUrl: './detalle-personaje.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Detalle {
+export class DetallePersonaje {
   private readonly servicio = inject(PersonajesService);
   protected readonly favs = inject(FavoritosService);
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideImageOff, LucideStar, LucideZap } from '@lucide/angular';
-import { Personaje } from '../personaje';
+import { Personaje } from '../../models/personaje.model';
 
 @Component({
   selector: 'app-personaje-card',
@@ -13,6 +13,8 @@ import { Personaje } from '../personaje';
   templateUrl: './personaje-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// Componente de presentación: muestra un personaje y avisa cuando lo marcan.
+// No inyecta servicios; todo le llega por input() y sale por output().
 export class PersonajeCard {
   // Entradas: datos que bajan del padre
   readonly personaje = input.required<Personaje>();

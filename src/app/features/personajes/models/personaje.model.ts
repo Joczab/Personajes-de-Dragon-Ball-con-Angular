@@ -35,14 +35,12 @@ export interface PersonajeDetalle extends Personaje {
   transformations?: Transformacion[];
 }
 
-// Respuesta paginada de la API
-export interface Pagina<T> {
-  items: T[];
-  meta: {
-    totalItems: number;
-    itemCount: number;
-    itemsPerPage: number;
-    totalPages: number;
-    currentPage: number;
-  };
+// Lo que define una búsqueda en el listado
+export interface Filtro {
+  pagina: number;
+  nombre: string;
+  raza: string;
 }
+
+// Razas que ofrece el filtro del listado
+export const RAZAS = ['Saiyan', 'Human', 'Namekian', 'Frieza Race', 'Android', 'Majin', 'God', 'Angel'];

@@ -1,6 +1,7 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
 
-// Estado compartido: cualquier componente que inyecte este servicio ve los mismos favoritos.
+// Estado global de la app: lo usan el header y varias features, por eso vive en core.
+// Cualquier componente que inyecte este servicio ve los mismos favoritos.
 @Injectable({ providedIn: 'root' })
 export class FavoritosService {
   private readonly ids = signal<number[]>(leer());

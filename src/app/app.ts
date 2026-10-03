@@ -1,15 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { LucideStar, LucideZap } from '@lucide/angular';
-import { FavoritosService } from './personajes/favoritos.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { Header } from '@core/layout/header/header';
 
+// Shell de la aplicación: la barra de arriba y el hueco donde el router pinta cada página.
+// No tiene estado ni lógica: eso vive en las features y en core.
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideZap, LucideStar],
+  imports: [RouterOutlet, Header],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {
-  protected readonly titulo = signal('Directorio de Personajes');
-  protected readonly favs = inject(FavoritosService);
-}
+export class App {}

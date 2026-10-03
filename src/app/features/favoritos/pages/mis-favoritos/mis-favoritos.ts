@@ -2,17 +2,19 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { PersonajeCard } from '../../personajes/personaje-card/personaje-card';
-import { PersonajesService } from '../../personajes/personajes.service';
-import { FavoritosService } from '../../personajes/favoritos.service';
+import { FavoritosService } from '@core/services/favoritos.service';
+import { PersonajeCard } from '@features/personajes/components/personaje-card/personaje-card';
+import { PersonajesService } from '@features/personajes/services/personajes.service';
 
 @Component({
-  selector: 'app-favoritos',
+  selector: 'app-mis-favoritos',
   imports: [PersonajeCard, RouterLink],
-  templateUrl: './favoritos.html',
+  templateUrl: './mis-favoritos.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Favoritos {
+// Una página puede usar componentes y servicios de otra feature,
+// pero nunca sus páginas (esas solo las carga el router).
+export class MisFavoritos {
   private readonly servicio = inject(PersonajesService);
   protected readonly favs = inject(FavoritosService);
 
