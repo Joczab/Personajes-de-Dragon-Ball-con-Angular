@@ -4,6 +4,7 @@ import { Paginador } from './paginador';
 describe('Paginador', () => {
   it('desactiva "Anterior" en la primera página y avisa la siguiente', async () => {
     const fixture = TestBed.createComponent(Paginador);
+    // [E81] setInput(): así se le pasan input() a un componente en una prueba
     fixture.componentRef.setInput('pagina', 1);
     fixture.componentRef.setInput('totalPaginas', 5);
     await fixture.whenStable();

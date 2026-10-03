@@ -7,9 +7,11 @@
   </p>
 }
 
+<!-- [E73] [formGroup] conecta con la clase. (ngSubmit) al enviar. novalidate apaga la validación del navegador -->
 <form [formGroup]="form" (ngSubmit)="enviar()" novalidate class="grid max-w-lg gap-5">
   <label class="grid gap-1.5 font-medium">
     Nombre
+    <!-- [E74] formControlName enlaza el campo con su control -->
     <input formControlName="nombre" class="campo" />
     @if (tieneError('nombre', 'required')) { <small class="font-normal text-red-700">El nombre es obligatorio.</small> }
     @if (tieneError('nombre', 'minlength')) { <small class="font-normal text-red-700">Mínimo 3 caracteres.</small> }

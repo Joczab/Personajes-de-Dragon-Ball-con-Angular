@@ -10,6 +10,7 @@ import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Paginador {
+  // [E59] Componente de shared/: no sabe qué se pagina
   readonly pagina = input.required<number>();
   readonly totalPaginas = input.required<number>();
 

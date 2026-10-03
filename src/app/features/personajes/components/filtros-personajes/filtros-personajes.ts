@@ -10,6 +10,7 @@ import { LucideSearch } from '@lucide/angular';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FiltrosPersonajes {
+  // [E54] Presentación: solo input() y output(), no inyecta servicios
   readonly texto = input('');
   readonly raza = input('todas');
   readonly razas = input.required<string[]>();
@@ -17,6 +18,7 @@ export class FiltrosPersonajes {
   readonly textoCambio = output<string>();
   readonly razaCambio = output<string>();
 
+  // [E55] Lee el valor del DOM y lo emite hacia la página
   protected alEscribir(evento: Event) {
     this.textoCambio.emit((evento.target as HTMLInputElement).value);
   }

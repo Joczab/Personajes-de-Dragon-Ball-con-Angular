@@ -1,5 +1,6 @@
 // Forma de un personaje tal como la devuelve https://dragonball-api.com/api/characters
 // Solo tipamos lo que vamos a usar.
+// [E08] Union type: gender solo acepta estos 3 textos
 export type Genero = 'Male' | 'Female' | 'Unknown';
 
 export interface Personaje {
@@ -30,6 +31,7 @@ export interface Transformacion {
 }
 
 // El detalle (/characters/:id) trae además el planeta y las transformaciones
+// [E09] extends: hereda todo Personaje y suma planeta y transformaciones (? = opcional)
 export interface PersonajeDetalle extends Personaje {
   originPlanet?: Planeta;
   transformations?: Transformacion[];
@@ -43,4 +45,5 @@ export interface Filtro {
 }
 
 // Razas que ofrece el filtro del listado
+// [E10] Constantes del dominio junto a sus modelos
 export const RAZAS = ['Saiyan', 'Human', 'Namekian', 'Frieza Race', 'Android', 'Majin', 'God', 'Angel'];

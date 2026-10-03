@@ -1,3 +1,4 @@
+<!-- [E53] Contenedor -> presentación: bajan [texto] y [raza], suben (textoCambio) y (razaCambio) -->
 <app-filtros-personajes
   [texto]="texto()"
   [raza]="raza()"
@@ -6,6 +7,7 @@
   (razaCambio)="alCambiarRaza($event)"
 />
 
+<!-- [E57] Cargando / resultados / @empty -->
 @if (cargando()) {
   <p class="text-stone-500">Cargando…</p>
 } @else {
@@ -17,6 +19,7 @@
     Ojo: el orden va de arriba hacia abajo en cada columna, no de izquierda a derecha.
     Cada tarjeta lleva break-inside-avoid (en su host) para no partirse entre dos columnas.
   -->
+  <!-- [E26] Masonry con columns-*. Aquí el padre usa la tarjeta: [entradas] y (salida) -->
   <section class="columns-2 gap-4 sm:columns-3 lg:columns-4">
     @for (p of personajes(); track p.id) {
       <app-personaje-card
@@ -29,5 +32,6 @@
     }
   </section>
 
+  <!-- [E58] Paginador de shared/: (cambio) trae la página pedida -->
   <app-paginador [pagina]="pagina()" [totalPaginas]="totalPaginas()" (cambio)="pagina.set($event)" />
 }

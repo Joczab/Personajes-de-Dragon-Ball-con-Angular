@@ -10,4 +10,5 @@ import { Header } from '@core/layout/header/header';
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// [E05] Componente raíz mínimo: header + router-outlet, sin estado ni lógica
 export class App {}

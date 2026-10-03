@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-no-encontrada',
   imports: [RouterLink],
+  // [E36] template inline: la plantilla dentro del .ts (sirve si es corta)
   template: `
     <div class="py-16 text-center">
       <h2 class="text-3xl font-bold">Esta página se fue a otra dimensión</h2>
