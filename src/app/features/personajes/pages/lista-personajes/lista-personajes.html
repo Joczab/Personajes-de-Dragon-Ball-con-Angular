@@ -2,9 +2,11 @@
 <app-filtros-personajes
   [texto]="texto()"
   [raza]="raza()"
+  [genero]="genero()"
   [razas]="razas"
   (textoCambio)="alCambiarTexto($event)"
   (razaCambio)="alCambiarRaza($event)"
+  (generoCambio)="alCambiarGenero($event)"
 />
 
 <!-- [E57] Cargando / resultados / @empty -->

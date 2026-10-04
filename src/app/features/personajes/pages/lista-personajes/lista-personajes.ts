@@ -5,8 +5,9 @@ import { FavoritosService } from '@core/services/favoritos.service';
 import { Paginador } from '@shared/ui/paginador/paginador';
 import { FiltrosPersonajes } from '../../components/filtros-personajes/filtros-personajes';
 import { PersonajeCard } from '../../components/personaje-card/personaje-card';
-import { RAZAS } from '../../models/personaje.model';
+import { Genero, RAZAS } from '../../models/personaje.model';
 import { PersonajesService } from '../../services/personajes.service';
+
 
 // Página (componente contenedor): tiene el estado, habla con los servicios
 // y le pasa datos a los componentes de presentación.
@@ -26,6 +27,7 @@ export class ListaPersonajes {
   // [E48] Estado de la UI: texto, raza y página
   protected readonly texto = signal('');
   protected readonly raza = signal('todas');
+  protected readonly genero = signal<Genero | 'todos'>('todos');
   protected readonly pagina = signal(1);
 
   // Un solo objeto con todo lo que define la búsqueda
@@ -33,6 +35,7 @@ export class ListaPersonajes {
   private readonly filtro = computed(() => ({
     nombre: this.texto().trim(),
     raza: this.raza(),
+    genero: this.genero(),
     pagina: this.pagina(),
   }));
 
@@ -51,6 +54,7 @@ export class ListaPersonajes {
   protected readonly personajes = computed(() => this.respuesta()?.items ?? []);
   protected readonly total = computed(() => this.respuesta()?.meta.totalItems ?? 0);
   protected readonly totalPaginas = computed(() => this.respuesta()?.meta.totalPages ?? 0);
+  
 
   // [E52] El hijo avisa -> .set(). Si cambia el filtro, volvemos a la página 1
   protected alCambiarTexto(texto: string) {
@@ -60,6 +64,11 @@ export class ListaPersonajes {
 
   protected alCambiarRaza(raza: string) {
     this.raza.set(raza);
+    this.pagina.set(1);
+  }
+  
+  protected alCambiarGenero(genero: Genero | 'todos'){
+    this.genero.set(genero);
     this.pagina.set(1);
   }
 }

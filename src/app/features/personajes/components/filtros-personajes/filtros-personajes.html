@@ -19,5 +19,19 @@
     @for (r of razas(); track r) {
       <option [value]="r">{{ r }}</option>
     }
+    
   </select>
+
+  <select 
+  [value]='genero()'
+  (change)="alElegirGenero($event)"
+  class="rounded-lg border border-stone-300 bg-white px-3 py-2 outline-none focus:border-ki-500 focus:ring-2 focus:ring-ki-500/30"
+  >
+    <option value="todos">Todos los generos</option>
+      @for (g of generos; track g.valor){
+        <option [value]="g.valor">{{g.etiqueta}}</option>
+      }    
+
+  </select>
+ 
 </div>
