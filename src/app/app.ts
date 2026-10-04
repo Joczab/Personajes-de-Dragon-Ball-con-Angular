@@ -1,17 +1,14 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { LucideStar } from '@lucide/angular';
-import { PERSONAJES_MOCK } from './personajes/personajes.mock';
-import { PersonajeCard } from './personajes/personaje-card/personaje-card';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { Header } from '@core/layout/header/header';
 
-
+// Shell de la aplicación: la barra de arriba y el hueco donde el router pinta cada página.
+// No tiene estado ni lógica: eso vive en las features y en core.
 @Component({
   selector: 'app-root',
-  imports: [LucideStar, PersonajeCard],
+  imports: [RouterOutlet, Header],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {
-  protected readonly titulo = signal('Directorio de Personajes');
-
-  personajes = signal(PERSONAJES_MOCK);
-}
+// [E05] Componente raíz mínimo: header + router-outlet, sin estado ni lógica
+export class App {}
