@@ -1,0 +1,12 @@
+@if (cargando()) {
+    <p class="text-stone-500">Cargando planetas...</p>
+} @else {
+    <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+        @for (p of planetas(); track p.id){
+            <app-planeta-card [planeta]="p"/>
+        }
+    </section>
+
+    <app-paginador [pagina]="pagina()" [totalPaginas]="totalPaginas()" (cambio)="pagina.set($event)" />
+}
