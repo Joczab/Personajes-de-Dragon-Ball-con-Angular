@@ -18,6 +18,10 @@ export const routes: Routes = [
     loadChildren: () => import('./features/sugerencias/sugerencias.routes').then((m) => m.SUGERENCIAS_ROUTES),
   },
   {
+    path: 'planetas',
+    loadChildren: () => import('./features/planetas/planetas.routes').then((m) => m.PLANETAS_ROUTES),
+  },
+  {
     // [E33] '**' atrapa cualquier URL que no exista. Siempre al final
     path: '**',
     title: 'No encontrada',
